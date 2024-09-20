@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #ffe8a3;
+      }
+
+      .container {
+        width: 370px;
+        margin: 0 auto;
+      }
+
+      .box {
+        outline: 2px solid #9747ff;
+        resize: horizontal;
+      }
+
+      .suject {
+        margin: 16px 0 8px;
+        font-size: 14px;
+      }
+
+      .line {
+        word-break: break-all;
+        line-height: 20px;
+        max-height: 60px;
+        overflow: hidden;
+        text-align: justify;
+      }
+
+      .line-expand {
+        word-break: break-all;
+        line-height: 20px;
+        max-height: 60px;
+        overflow: hidden;
+        text-align: justify;
+      }
+
+      .line-expand .btn {
+        padding: 0 8px;
+        background-color: #9747ff;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        border: 0;
+        font-size: 16px;
+      }
+
+      .ranger {
+        display: block;
+        width: 200px;
+        margin: 8px auto 0;
+      }
+    </style>
+    <script src="../single-row/common.js"></script>
+    <script src="./vendor.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrap">
+        <div class="suject">多行文本溢出末尾加省略号(JS实现)</div>
+        <div class="box">
+          <div class="line">
+            滚滚长江东逝水，浪花淘尽英雄。是非成败转头空。青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="suject">多行文本溢出末尾加省略号，鼠标悬停显示完整(JS实现)</div>
+        <div class="box">
+          <div class="line">
+            滚滚长江东逝水，浪花淘尽英雄。是非成败转头空。青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="suject">多行文本溢出末尾加省略号，显示展开按钮(JS实现)</div>
+        <div class="box">
+          <div class="line-expand">
+            <span class="text">
+              滚滚长江东逝水，浪花淘尽英雄。是非成败转头空。青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </span>
+            <span class="ellipsis">...</span>
+            <button type="button" class="btn" onclick="handleToggle(globalThis.event)">展开</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input
+      class="ranger"
+      aria-label="input"
+      type="range"
+      min="200"
+      value="370"
+      max="1000"
+      oninput="this.previousElementSibling.style.width = this.value + 'px'"
+    />
+    <script>
+      const nodeList = document.querySelectorAll('.line')
+      const typeMap = ['normal', 'hover', 'expand']
+      for (let i = 0; i < nodeList.length; i++) {
+        const canvas = document.createElement('canvas')
+        canvas.style.display = 'block'
+        canvas.style.margin = '12px auto'
+        canvas.style.outline = '2px solid #9747ff'
+        document.body.append(canvas)
+        const ctx = canvas.getContext('2d')
+        observeElement(ctx, canvas, nodeList[i], nodeList[i], nodeList[i].innerHTML, {
+          maxLine: 3,
+          type: typeMap[i]
+        })
+      }
+      const lineNode = document.querySelector('.line-expand')
+      const textNode = document.querySelector('.line-expand .text')
+      const cacheText = textNode.innerHTML
+      const canvas = document.createElement('canvas')
+      canvas.style.display = 'block'
+      canvas.style.margin = '12px auto'
+      canvas.style.outline = '2px solid #9747ff'
+      document.body.append(canvas)
+      const ctx = canvas.getContext('2d')
+      const observer = observeElement(ctx, canvas, lineNode, textNode, textNode.innerHTML, {
+        maxLine: 3,
+        type: 'expand',
+        placeholder: '...展开',
+        append: '',
+        fixWidth: 48
+      })
+
+      const handleToggle = e => {
+        observer.disconnect()
+        const ellipsisEl = lineNode.querySelector('.ellipsis')
+        ellipsisEl.style.display = 'none'
+        e.target.style.display = 'none'
+        lineNode.style.maxHeight = 'initial'
+        textNode.innerHTML = cacheText
+      }
+    </script>
+  </body>
+</html>

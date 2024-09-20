@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #ffe8a3;
+      }
+
+      .container {
+        width: 380px;
+        margin: 20px auto;
+      }
+
+      .box {
+        outline: 2px solid #9747ff;
+        resize: horizontal;
+        text-align: justify;
+      }
+
+      .suject {
+        margin: 16px 0 8px;
+        font-size: 14px;
+      }
+
+      .line {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+      }
+
+      .line-hover {
+        position: relative;
+      }
+
+      .line-hover .text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        --hover-clamp: false;
+        animation: check 1s;
+        animation-timeline: scroll(y self);
+      }
+
+      .line-expand {
+        display: flex;
+      }
+
+      .line-expand .text {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+        overflow: hidden;
+        --expand-clamp: false;
+        animation: check 1s;
+        animation-timeline: scroll(y self);
+      }
+
+      .line-expand .text::before {
+        content: '';
+        float: right;
+        height: calc(100% - 20px);
+      }
+
+      .line-expand .btn {
+        line-height: 20px;
+        padding: 0 8px;
+        background-color: #9747ff;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        float: right;
+        clear: both;
+        display: none;
+      }
+
+      .line-expand .btn::after {
+        content: '展开';
+      }
+
+      .line-expand:has(:checked) .text {
+        -webkit-line-clamp: 999;
+      }
+
+      .line-expand:has(:checked) .btn::after {
+        content: '收起';
+      }
+
+      .line-expand:has(:checked) .btn {
+        display: initial;
+      }
+
+      @keyframes check {
+        from,
+        to {
+          --hover-clamp: true;
+          --expand-clamp: true;
+        }
+      }
+
+      @container style(--hover-clamp: true) {
+        .line-hover .text::after {
+          content: attr(data-title);
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translate(-50%, -100%);
+          background-color: rgba(0, 0, 0, 0.6);
+          padding: 4px;
+          border-radius: 4px;
+          color: #fff;
+          display: none;
+        }
+
+        .line-hover .text:hover::after {
+          cursor: default;
+          display: block;
+        }
+      }
+
+      @container style(--expand-clamp: true) {
+        .line-expand .btn {
+          display: initial;
+        }
+      }
+
+      .ranger {
+        display: block;
+        width: 200px;
+        margin: 16px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrap">
+        <div class="suject">多行文本溢出末尾加省略号(纯CSS实现)</div>
+        <div class="box">
+          <div class="line">
+            滚滚长江东逝水，浪花淘尽英雄。是非成败转头空。青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="suject">多行文本溢出末尾加省略号，鼠标悬停显示完整(纯CSS实现)</div>
+        <div class="box">
+          <div class="line-hover">
+            <div
+              class="text"
+              data-title="滚滚长江东逝水，浪花淘尽英雄。是非成败转头空。青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。"
+            >
+              滚滚长江东逝水，浪花淘尽英雄。是非成败转头空。青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="suject">多行文本溢出末尾加省略号，显示展开按钮(纯CSS实现)</div>
+        <div class="box">
+          <div class="line-expand">
+            <div class="text">
+              <label class="btn"><input type="checkbox" hidden /></label>
+              滚滚长江东逝水，浪花淘尽英雄。是非成败转头空。青山依旧在，几度夕阳红。白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input
+      class="ranger"
+      aria-label="input"
+      type="range"
+      min="200"
+      value="380"
+      max="1000"
+      oninput="this.previousElementSibling.style.width = this.value + 'px'"
+    />
+  </body>
+</html>

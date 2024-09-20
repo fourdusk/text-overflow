@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #ffe8a3;
+      }
+
+      .container {
+        width: 500px;
+        margin: 20px auto;
+      }
+
+      .box {
+        outline: 2px solid #9747ff;
+        resize: horizontal;
+      }
+
+      .suject {
+        margin: 16px 0 8px;
+        font-size: 14px;
+      }
+
+      .line {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .line-hover {
+        line-height: 1;
+        height: 1em;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .line-hover .text {
+        max-height: 2em;
+      }
+
+      .line-hover .title {
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        background: inherit;
+        top: -2em;
+      }
+
+      .line-mid {
+        line-height: 1;
+        height: 1em;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .line-mid .text {
+        max-height: 2em;
+      }
+
+      .line-mid .title {
+        position: relative;
+        background: inherit;
+        text-align: justify;
+        overflow: hidden;
+        height: 1em;
+        top: -2em;
+      }
+
+      .line-mid .title::before {
+        content: attr(title);
+        width: 50%;
+        float: right;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        direction: rtl;
+      }
+
+      .line-scroll {
+        line-height: 1;
+        height: 1em;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .line-scroll .text {
+        max-height: 2em;
+      }
+
+      .line-scroll .title {
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        background: inherit;
+        top: -2em;
+      }
+
+      .line-scroll .title::after {
+        content: attr(data-title);
+        padding: 0 4em;
+      }
+
+      .line-scroll .title:hover {
+        display: inline-flex;
+        animation: move 10s 0.3s linear infinite;
+      }
+
+      @keyframes move {
+        to {
+          transform: translate3d(-50%, 0, 0);
+        }
+      }
+
+      .ranger {
+        display: block;
+        width: 200px;
+        margin: 16px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrap">
+        <div class="suject">单行文本溢出末尾加省略号(纯CSS实现)</div>
+        <div class="box">
+          <div class="line">
+            白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="suject">单行文本溢出末尾加省略号，鼠标悬停显示完整(纯CSS实现)</div>
+        <div class="box">
+          <div class="line-hover">
+            <div class="text">
+              白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </div>
+            <div
+              class="title"
+              title="白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。"
+            >
+              白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="suject">单行文本溢出中间加省略号，鼠标悬停显示完整(纯CSS实现)</div>
+        <div class="box">
+          <div class="line-mid">
+            <div class="text">
+              白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </div>
+            <div
+              class="title"
+              title="白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。"
+            >
+              白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="suject">单行文本溢出末尾加省略号，鼠标悬停自动滚动(纯CSS实现)</div>
+        <div class="box">
+          <div class="line-scroll">
+            <div class="text">
+              白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </div>
+            <div
+              class="title"
+              data-title="白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。"
+            >
+              白发渔樵江渚上，惯看秋月春风。一壶浊酒喜相逢。古今多少事，都付笑谈中。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input
+      class="ranger"
+      aria-label="input"
+      type="range"
+      min="200"
+      value="500"
+      max="1000"
+      oninput="this.previousElementSibling.style.width = this.value + 'px'"
+    />
+  </body>
+</html>
